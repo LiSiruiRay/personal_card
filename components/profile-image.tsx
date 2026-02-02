@@ -1,109 +1,158 @@
 "use client"
 
-import React from "react"
-
-import { useRef, useState } from "react"
+import React, { useRef, useState, useEffect, useCallback } from "react"
 import Image from "next/image"
 
-export default function ProfileImage() {
-  const containerRef = useRef<HTMLDivElement>(null)
-  const [transform, setTransform] = useState({ rotateX: 0, rotateY: 0, translateX: 0, translateY: 0 })
-  const [isHovered, setIsHovered] = useState(false)
+interface MousePosition {
+  x: number
+  y: number
+}
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!containerRef.current) return
-    
-    const rect = containerRef.current.getBoundingClientRect()
+export default function ProfileImage() {
+  const cardAreaRef = useRef<HTMLDivElement>(null)
+  const [mousePosition, setMousePosition] = useState<MousePosition>({ x: 0, y: 0 })
+  const [isHovering, setIsHovering] = useState(false)
+  const [smoothPosition, setSmoothPosition] = useState<MousePosition>({ x: 0, y: 0 })
+
+  // Global mouse move handler - tracks cursor relative to card center
+  const handleMouseMove = useCallback((e: MouseEvent) => {
+    if (!cardAreaRef.current) return
+
+    const rect = cardAreaRef.current.getBoundingClientRect()
     const centerX = rect.left + rect.width / 2
     const centerY = rect.top + rect.height / 2
-    
-    const mouseX = e.clientX - centerX
-    const mouseY = e.clientY - centerY
-    
-    // Calculate rotation (subtle tilt effect)
-    const rotateY = (mouseX / rect.width) * 15
-    const rotateX = -(mouseY / rect.height) * 15
-    
-    // Calculate translation (move toward cursor)
-    const translateX = (mouseX / rect.width) * 10
-    const translateY = (mouseY / rect.height) * 10
-    
-    setTransform({ rotateX, rotateY, translateX, translateY })
+
+    // Calculate relative position from card center, normalized to -1 to 1 range
+    // Using a larger divisor for global tracking to make the effect more subtle at distance
+    const x = (e.clientX - centerX) / (window.innerWidth / 2)
+    const y = (e.clientY - centerY) / (window.innerHeight / 2)
+
+    setMousePosition({ x: Math.max(-1, Math.min(1, x)), y: Math.max(-1, Math.min(1, y)) })
+  }, [])
+
+  // Check if mouse is over the card area for grayscale effect
+  const handleCardMouseEnter = useCallback(() => {
+    setIsHovering(true)
+  }, [])
+
+  const handleCardMouseLeave = useCallback(() => {
+    setIsHovering(false)
+  }, [])
+
+  // Smooth animation loop
+  useEffect(() => {
+    let animationFrameId: number
+
+    const animate = () => {
+      setSmoothPosition(prev => ({
+        x: prev.x + (mousePosition.x - prev.x) * 0.08,
+        y: prev.y + (mousePosition.y - prev.y) * 0.08,
+      }))
+      animationFrameId = requestAnimationFrame(animate)
+    }
+
+    animationFrameId = requestAnimationFrame(animate)
+
+    return () => {
+      cancelAnimationFrame(animationFrameId)
+    }
+  }, [mousePosition])
+
+  // Global mouse tracking on window
+  useEffect(() => {
+    window.addEventListener('mousemove', handleMouseMove)
+
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove)
+    }
+  }, [handleMouseMove])
+
+  const mainCardTransform = {
+    translateX: smoothPosition.x * 15,
+    translateY: smoothPosition.y * -20,
   }
 
-  const handleMouseLeave = () => {
-    setIsHovered(false)
-    setTransform({ rotateX: 0, rotateY: 0, translateX: 0, translateY: 0 })
+  const statusCardTransform = {
+    translateX: smoothPosition.x * 30,
+    translateY: smoothPosition.y * -40,
   }
 
-  const handleMouseEnter = () => {
-    setIsHovered(true)
+  const borderCard1Transform = {
+    translateX: smoothPosition.x * -8,
+    translateY: smoothPosition.y * 10,
+  }
+
+  const borderCard2Transform = {
+    translateX: smoothPosition.x * -15,
+    translateY: smoothPosition.y * 20,
   }
 
   return (
-    <div className="relative">
-      {/* Grid background */}
-      <div className="absolute -inset-8 opacity-30 pointer-events-none">
-        <svg width="100%" height="100%" className="text-border">
-          <defs>
-            <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-              <path d="M 40 0 L 0 0 0 40" fill="none" stroke="currentColor" strokeWidth="0.5" />
-            </pattern>
-          </defs>
-          <rect width="100%" height="100%" fill="url(#grid)" />
-        </svg>
-      </div>
-      
-      {/* Main image container */}
-      <div
-        ref={containerRef}
-        onMouseMove={handleMouseMove}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-        className="relative cursor-crosshair"
-        style={{
-          perspective: "1000px",
-        }}
+    <div className="relative h-[400px] lg:h-[600px] flex items-center justify-center lg:justify-start">
+      {/* Card wrapper */}
+      <div 
+        ref={cardAreaRef} 
+        className="relative w-[280px] h-[280px] md:w-[320px] md:h-[320px] lg:w-[360px] lg:h-[360px]"
+        onMouseEnter={handleCardMouseEnter}
+        onMouseLeave={handleCardMouseLeave}
       >
+        {/* Border Card 1 - top right offset */}
         <div
-          className="relative transition-all duration-300 ease-out"
+          className="absolute w-full h-full border border-border transition-transform duration-100 ease-out -top-4 -right-4 md:-top-4 md:-right-4 z-0"
           style={{
-            transform: `rotateX(${transform.rotateX}deg) rotateY(${transform.rotateY}deg) translateX(${transform.translateX}px) translateY(${transform.translateY}px)`,
-            transformStyle: "preserve-3d",
+            transform: `translateX(${borderCard1Transform.translateX}px) translateY(${borderCard1Transform.translateY}px)`,
           }}
-        >
-          <div className="relative w-64 h-64 md:w-72 md:h-72 overflow-hidden shadow-2xl">
-            <Image
-              src="/images/profile.jpeg"
-              alt="Ray Li - Profile photo"
-              fill
-              className={`object-cover object-top transition-all duration-700 ease-in-out ${
-                isHovered ? "grayscale-0" : "grayscale contrast-125"
-              }`}
-              priority
-            />
-          </div>
-        </div>
+        />
         
-        {/* Status badge */}
-        <div 
-          className="absolute -bottom-6 -right-6 bg-background p-4 shadow-lg border border-border"
+        {/* Border Card 2 - bottom left offset */}
+        <div
+          className="absolute w-full h-full border border-border transition-transform duration-100 ease-out -bottom-4 -left-4 md:-bottom-4 md:-left-4 z-0"
           style={{
-            transform: `translateX(${transform.translateX * 0.5}px) translateY(${transform.translateY * 0.5}px)`,
-            transition: "transform 0.3s ease-out",
+            transform: `translateX(${borderCard2Transform.translateX}px) translateY(${borderCard2Transform.translateY}px)`,
+          }}
+        />
+
+        {/* Main Photo Card */}
+        <div
+          className={`absolute inset-0 z-10 overflow-hidden rounded-sm transition-all duration-100 ease-out ${
+            isHovering ? 'shadow-[0_25px_50px_-12px_rgba(0,0,0,0.15)]' : ''
+          }`}
+          style={{
+            transform: `translateX(${mainCardTransform.translateX}px) translateY(${mainCardTransform.translateY}px)`,
           }}
         >
-          <svg 
-            viewBox="0 0 24 24" 
-            className="w-6 h-6 mb-2 text-foreground"
+          <Image
+            src="/images/profile.jpeg"
+            alt="Ray Li - Profile photo"
+            fill
+            className={`object-cover transition-all duration-500 ease-out ${
+              isHovering ? 'grayscale-0' : 'grayscale'
+            }`}
+            priority
+          />
+        </div>
+
+        {/* Status Card */}
+        <div
+          className={`absolute -bottom-8 -right-12 w-[160px] md:w-[200px] p-4 md:p-6 bg-background border border-border z-20 transition-all duration-100 ease-out ${
+            isHovering ? 'shadow-[0_35px_60px_-15px_rgba(0,0,0,0.15)]' : 'shadow-[0_25px_50px_-12px_rgba(0,0,0,0.1)]'
+          }`}
+          style={{
+            transform: `translateX(${statusCardTransform.translateX}px) translateY(${statusCardTransform.translateY}px)`,
+          }}
+        >
+          <svg
+            className="w-8 h-8 mb-3 text-foreground"
+            viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
             strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
           >
-            <path d="M3.5 12h1m16 0h1M12 3.5v1m0 15v1M5.64 5.64l.7.7m11.32 11.32l.7.7m-11.32.7l-.7.7m12.02-12.72l-.7.7" />
-            <path d="M12 8v8M8 12l4 3 4-3" strokeLinecap="round" strokeLinejoin="round" />
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
           </svg>
-          <p className="font-mono text-xs leading-tight">
+          <p className="font-mono text-xs leading-relaxed text-foreground">
             System resistance<br />
             testing in progress.
           </p>

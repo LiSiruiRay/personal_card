@@ -4,9 +4,18 @@ const tags = ["MATHEMATICS", "COMPUTER SCIENCE", "RESEARCH", "STARTUPS"]
 
 export default function HeroSection() {
   return (
-    <section className="min-h-screen px-6 md:px-12 lg:px-24 py-24" style={{ padding: "16px" }}>
-      <div data-face-content-container="true" className="@container/content mx-auto px-4 relative z-10 w-full">
-        <div className="grid grid-cols-1 @4xl:grid-cols-12 gap-12 items-center">
+    <section className="relative min-h-screen flex items-center justify-center bg-background overflow-hidden">
+      {/* Grid Background */}
+      <div 
+        className="absolute inset-0 opacity-[0.03] pointer-events-none"
+        style={{
+          backgroundImage: 'linear-gradient(currentColor 1px, transparent 1px), linear-gradient(90deg, currentColor 1px, transparent 1px)',
+          backgroundSize: '40px 40px'
+        }}
+      />
+      
+      <div className="max-w-[1400px] w-full mx-auto px-6 md:px-8 lg:px-12 py-8 z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           {/* Left side - Text content */}
           <div className="lg:col-span-7 space-y-8">
             {/* Role badge */}
@@ -24,14 +33,14 @@ export default function HeroSection() {
             
             {/* Description */}
             <div className="max-w-md space-y-6">
-              <p className="text-xl md:text-2xl leading-relaxed text-foreground">
+              <p className="text-xl md:text-2xl font-light leading-relaxed text-muted-foreground">
                 Math & Computer Science.<br />
                 Research-trained. Startup-shaped.
               </p>
               
               {/* Quote */}
               <blockquote className="border-l-2 border-foreground pl-6 py-2">
-                <p className="font-mono text-sm leading-relaxed text-muted-foreground">
+                <p className="font-mono text-lg leading-relaxed text-foreground">
                   I like things that resist — proofs, markets,<br />
                   locks, muscle.
                 </p>
@@ -52,7 +61,7 @@ export default function HeroSection() {
           </div>
           
           {/* Right side - Profile image */}
-          <div className="lg:col-span-5 flex justify-center lg:justify-end lg:pt-16">
+          <div className="lg:col-span-5">
             <ProfileImage />
           </div>
         </div>
