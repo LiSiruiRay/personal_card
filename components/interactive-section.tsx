@@ -32,8 +32,9 @@ export default function InteractiveSection() {
   }
 
   return (
-    <section className="bg-[#0A0A0B] text-[#FAFAFA] px-6 md:px-12 lg:px-24 py-24 border-t border-[#27272A]">
-      <div className="max-w-7xl mx-auto">
+    <section className="relative bg-[#0A0A0B] text-[#FAFAFA] py-24 border-t border-[#27272A]">
+      <div className="face-shell-container" style={{position: "relative", width: "100%", clipPath: "inset(0px)"}}>
+        <div data-face-content-container="true" className="@container/content mx-auto px-4 relative z-10 w-full">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-center">
           {/* Left side - Content */}
           <div className="space-y-6">
@@ -106,6 +107,7 @@ export default function InteractiveSection() {
               />
             </button>
           </div>
+        </div>
         </div>
       </div>
     </section>

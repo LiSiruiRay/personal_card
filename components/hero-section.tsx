@@ -14,7 +14,8 @@ export default function HeroSection() {
         }}
       />
       
-      <div className="max-w-[1400px] w-full mx-auto px-6 md:px-8 lg:px-12 py-8 z-10">
+      <div className="face-shell-container" style={{position: "relative", width: "100%", clipPath: "inset(0px)"}}>
+        <div data-face-content-container="true" className="@container/content mx-auto px-4 relative z-10 w-full">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           {/* Left side - Text content */}
           <div className="lg:col-span-7 space-y-8">
@@ -64,6 +65,7 @@ export default function HeroSection() {
           <div className="lg:col-span-5">
             <ProfileImage />
           </div>
+        </div>
         </div>
       </div>
     </section>

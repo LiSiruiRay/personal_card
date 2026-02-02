@@ -21,8 +21,9 @@ const projects = [
 
 export default function SelectedWorks() {
   return (
-    <section className="px-6 md:px-12 lg:px-24 py-24 border-t border-border">
-      <div className="max-w-7xl mx-auto">
+    <section className="relative py-24 border-t border-border">
+      <div className="face-shell-container" style={{position: "relative", width: "100%", clipPath: "inset(0px)"}}>
+        <div data-face-content-container="true" className="@container/content mx-auto px-4 relative z-10 w-full">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
           {/* Left side - Section header */}
           <div className="lg:col-span-5 space-y-6">
@@ -80,6 +81,7 @@ export default function SelectedWorks() {
               </div>
             ))}
           </div>
+        </div>
         </div>
       </div>
     </section>

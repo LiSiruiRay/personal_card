@@ -29,8 +29,9 @@ const interests = [
 
 export default function SystemsSection() {
   return (
-    <section className="bg-[#0A0A0B] text-[#FAFAFA] px-6 md:px-12 lg:px-24 py-24">
-      <div className="max-w-7xl mx-auto">
+    <section className="relative bg-[#0A0A0B] text-[#FAFAFA] py-24">
+      <div className="face-shell-container" style={{position: "relative", width: "100%", clipPath: "inset(0px)"}}>
+        <div data-face-content-container="true" className="@container/content mx-auto px-4 relative z-10 w-full">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 mb-16">
           {/* Left side - Header */}
           <div className="lg:col-span-7">
@@ -80,6 +81,7 @@ export default function SystemsSection() {
               </div>
             )
           })}
+        </div>
         </div>
       </div>
     </section>
