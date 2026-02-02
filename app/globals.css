@@ -24,7 +24,8 @@
   --border: #E4E4E7;
   --input: #E4E4E7;
   --ring: #A1A1AA;
-  --radius: 0.5rem; /* User-defined radius */
+  --radius: 0.5rem;
+  /* User-defined radius */
 
   /* Shadcn/ui default colors (chart, sidebar, etc.) not defined by user */
   --chart-1: oklch(0.646 0.222 41.116);
@@ -62,11 +63,14 @@
   --foreground: var(--dark-section-foreground, oklch(0.985 0 0));
   --card: var(--dark-section-card, oklch(0.145 0 0));
   --card-foreground: var(--dark-section-card-foreground, oklch(0.985 0 0));
-  --popover: oklch(0.145 0 0); /* No user-defined dark popover, use default */
-  --popover-foreground: oklch(0.985 0 0); /* No user-defined dark popover, use default */
+  --popover: oklch(0.145 0 0);
+  /* No user-defined dark popover, use default */
+  --popover-foreground: oklch(0.985 0 0);
+  /* No user-defined dark popover, use default */
   --primary: oklch(0.985 0 0);
   --primary-foreground: oklch(0.205 0 0);
-  --secondary: var(--dark-section-secondary, oklch(0.269 0 0)); /* User had no secondary in dark-section, using shadcn default. */
+  --secondary: var(--dark-section-secondary, oklch(0.269 0 0));
+  /* User had no secondary in dark-section, using shadcn default. */
   --secondary-foreground: oklch(0.985 0 0);
   --muted: var(--dark-section-muted, oklch(0.269 0 0));
   --muted-foreground: var(--dark-section-muted-foreground, oklch(0.708 0 0));
@@ -137,9 +141,61 @@
 
 @layer base {
   * {
-    @apply border-border outline-ring/50; /* Added outline-ring/50 */
+    @apply border-border outline-ring/50;
+    /* Added outline-ring/50 */
   }
+
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* Float up animation */
+@keyframes float-up {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-float-up {
+  animation: float-up 0.8s ease-out forwards;
+  opacity: 0;
+}
+
+.animate-delay-100 {
+  animation-delay: 100ms;
+}
+
+.animate-delay-200 {
+  animation-delay: 200ms;
+}
+
+.animate-delay-300 {
+  animation-delay: 300ms;
+}
+
+.animate-delay-400 {
+  animation-delay: 400ms;
+}
+
+.animate-delay-500 {
+  animation-delay: 500ms;
+}
+
+.animate-delay-600 {
+  animation-delay: 600ms;
+}
+
+.animate-delay-700 {
+  animation-delay: 700ms;
+}
+
+.animate-delay-800 {
+  animation-delay: 800ms;
 }
