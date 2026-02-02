@@ -62,15 +62,19 @@ export default function SystemsSection() {
         
         {/* Interest cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {interests.map((interest) => {
+          {interests.map((interest, index) => {
             const Icon = interest.icon
+            // Alternate between lighter (#18181B) and darker (#0A0A0B) backgrounds
+            const isLighter = index % 2 === 0
+            const bgColor = isLighter ? "bg-[#18181B]" : "bg-[#0A0A0B]"
+            
             return (
               <div 
                 key={interest.title}
-                className="bg-[#18181B] border border-[#27272A] p-6 hover:border-[#3F3F46] transition-colors duration-300 group"
+                className={`${bgColor} border border-[#27272A] p-6 transition-all duration-300 ease-out group hover:border-[#FAFAFA] hover:-translate-y-2 hover:shadow-[0_10px_40px_-10px_rgba(255,255,255,0.1)]`}
               >
                 <div className="flex justify-between items-start mb-12">
-                  <Icon className="w-5 h-5 text-[#A1A1AA] group-hover:text-[#FAFAFA] transition-colors" />
+                  <Icon className="w-5 h-5 text-[#A1A1AA] group-hover:text-[#FAFAFA] transition-colors duration-300" />
                   <span className="text-[10px] tracking-wider text-[#71717A] font-mono">
                     {interest.type}
                   </span>

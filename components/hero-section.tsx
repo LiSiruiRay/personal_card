@@ -16,9 +16,9 @@ export default function HeroSection() {
       
       <div className="face-shell-container" style={{position: "relative", width: "100%", clipPath: "inset(0px)"}}>
         <div data-face-content-container="true" className="@container/content mx-auto px-4 relative z-10 w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        <div className="grid grid-cols-1 @4xl:grid-cols-12 gap-12 items-center">
           {/* Left side - Text content */}
-          <div className="lg:col-span-7 space-y-8">
+          <div className="@4xl:col-span-7 space-y-8">
             {/* Role badge */}
             <div className="flex items-center gap-3 animate-float-up">
               <div className="w-8 h-px bg-foreground" />
@@ -70,7 +70,7 @@ export default function HeroSection() {
           </div>
           
           {/* Right side - Profile image */}
-          <div className="lg:col-span-5 animate-float-up animate-delay-200">
+          <div className="@4xl:col-span-5 animate-float-up animate-delay-200">
             <ProfileImage />
           </div>
         </div>

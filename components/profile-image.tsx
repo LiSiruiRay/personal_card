@@ -88,11 +88,11 @@ export default function ProfileImage() {
   }
 
   return (
-    <div className="relative h-[400px] lg:h-[600px] flex items-center justify-center lg:justify-start">
+    <div className="relative h-[400px] @4xl:h-[600px] flex items-center justify-center">
       {/* Card wrapper */}
       <div 
         ref={cardAreaRef} 
-        className="relative w-[280px] h-[280px] md:w-[320px] md:h-[320px] lg:w-[360px] lg:h-[360px]"
+        className="relative w-[280px] h-[280px] md:w-[320px] md:h-[320px] @4xl:w-[400px] @4xl:h-[400px]"
         onMouseEnter={handleCardMouseEnter}
         onMouseLeave={handleCardMouseLeave}
       >
