@@ -1,4 +1,5 @@
 import ProfileImage from "./profile-image"
+import ExternalLinks from "./external-links"
 
 const tags = ["MATHEMATICS", "COMPUTER SCIENCE", "RESEARCH", "STARTUPS"]
 
@@ -42,8 +43,8 @@ export default function HeroSection() {
               {/* Quote */}
               <blockquote className="border-l-2 border-foreground pl-6 py-2 animate-float-up animate-delay-300">
                 <p className="font-mono text-lg leading-relaxed text-foreground">
-                  I like things that resist — proofs, markets,<br />
-                  locks, muscle.
+                  I like things that resist — proofs, <br />
+                  markets, locks, muscle.
                 </p>
               </blockquote>
             </div>
@@ -66,6 +67,11 @@ export default function HeroSection() {
                   </span>
                 )
               })}
+            </div>
+            
+            {/* External Links */}
+            <div className="pt-3 md:pt-3 animate-float-up animate-delay-800">
+              <ExternalLinks />
             </div>
           </div>
           
